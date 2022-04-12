@@ -1,0 +1,63 @@
+package com.wipro.service;
+import java.util.*;
+import com.wipro.bean.*;
+public class EmployeeService {
+List<EmployeeBean> employeeDb = new ArrayList<>();
+	
+	public boolean insertEmployee(EmployeeBean bean) {
+		return employeeDb.add(bean);
+	}
+	
+	public boolean deleteEmployeByEmpID(int empId) {
+		boolean isRemoved = false;
+		
+		Iterator<EmployeeBean> it = employeeDb.iterator();
+		
+		while (it.hasNext()) {
+			EmployeeBean emp = it.next();
+			if (emp.getEmpId() == empId) {
+				isRemoved = true;
+				it.remove();
+			}
+		}
+		
+		return isRemoved;
+	}
+	
+	public String insertEmployeeByPosition(EmployeeBean bean,int pos)
+	{
+		String result = null;
+		if(pos<=employeeDb.size())
+		{
+			employeeDb.add(pos-1, bean);
+			result="Inserted Employee at Position: "+ pos;
+		}
+		else
+		{
+			insertEmployee(bean);
+			result="Inserted Employee at End postion: "+employeeDb.size();
+		}
+		return result;
+	}
+	
+	public boolean updateEmployeeByID(EmployeeBean bean,int empId)
+	{
+		boolean isUpdated = false;
+		ListIterator<EmployeeBean> it = employeeDb.listIterator();
+			while (it.hasNext()) {
+				EmployeeBean emp = it.next();
+				if (emp.getEmpId() == empId ) {
+					isUpdated = true;
+					it.set(bean);
+				}
+			}
+		return isUpdated;
+	}
+	
+	public EmployeeBean[] fetchAllEmployees() {
+		EmployeeBean[] empArray = new EmployeeBean[employeeDb.size()];
+		for (int i = 0; i < employeeDb.size(); i++)
+			empArray[i] = employeeDb.get(i);
+		return empArray;
+	}
+}

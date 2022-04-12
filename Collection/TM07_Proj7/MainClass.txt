@@ -1,0 +1,101 @@
+package com.wipro.main;
+import java.util.*;
+
+import com.wipro.bean.EmployeeBean;
+import com.wipro.service.EmployeeService;
+public class MainClass {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		EmployeeService service = new EmployeeService();
+		int option = 0;
+		String name,desc;
+		int id,sal;
+		Scanner sc = new Scanner(System.in);
+		while(option!=6) {
+		System.out.println("MAIN MENU");
+		System.out.println("=========");
+		System.out.println("1.Add Employee");
+		System.out.println("2.Add Employee by Position");
+		System.out.println("3.Delete Employee");
+		System.out.println("4.Update Employee Details");
+		System.out.println("5.View Employee");
+		System.out.println("6.Exit");
+		System.out.print("Enter your choice(1...5): ");
+		option=sc.nextInt();
+		sc.nextLine();
+		switch(option)
+		{
+			case 1:
+				System.out.println("Enter Employee Id: ");
+				id = sc.nextInt();
+				System.out.println("Enter Employee Name: ");
+				name = sc.next();
+				System.out.println("Enter Employee Designation: ");
+				desc = sc.next();
+				System.out.println("Enter Employee salary: ");
+				sal = sc.nextInt();
+				EmployeeBean bean = new EmployeeBean(id,name,desc,sal);
+				service.insertEmployee(bean);
+				System.out.println("-=-=-=Employee Added Successfully-=-=-");
+				break;
+			case 2:
+				System.out.println("Enter Employee Id: ");
+				id = sc.nextInt();
+				System.out.println("Enter Employee Name: ");
+				name = sc.next();
+				System.out.println("Enter Employee Designation: ");
+				desc = sc.next();
+				System.out.println("Enter Employee salary: ");
+				sal = sc.nextInt();
+				System.out.println("Enter The Positon");
+				int pos = sc.nextInt();
+				EmployeeBean bean1 = new EmployeeBean(id,name,desc,sal);
+				System.out.println(service.insertEmployeeByPosition(bean1,pos));
+				break;
+			case 3:
+				System.out.println("Enter the employee id to delete: ");
+				int delId = sc.nextInt();
+				boolean res = service.deleteEmployeByEmpID(delId);
+				if(res)
+				{
+					System.out.println("-=-=Employee Deleted Successfullly-=-=");
+				}
+				else
+				{
+					System.out.println("Employee ID Doesn't Exists");
+				}
+				break;
+			case 4:
+				System.out.println("Enter the employee id to update:");
+				int empId = sc.nextInt();
+				System.out.println("Enter Employee Name: ");
+				String ename = sc.next();
+				System.out.println("Enter Employee Designation: ");
+				String edesc = sc.next();
+				System.out.println("Enter Employee salary: ");
+				int esal = sc.nextInt();
+				EmployeeBean updatebean = new EmployeeBean(empId,ename,edesc,esal);
+				boolean result = service.updateEmployeeByID(updatebean, empId);
+				if(result)
+				{
+					System.out.println("Employee Updated Successfully");
+				}
+				else
+				{
+					System.out.println("Employee ID doesn't Exists");
+				}
+				break;
+			case 5:
+				System.out.println("-=-=EmployeeDetails-=-=");
+				for (EmployeeBean emp : service.fetchAllEmployees())
+					emp.GetEmployeeDetails();
+				break;
+			default:
+				break;
+		}
+		}
+		sc.close();
+	}
+
+}

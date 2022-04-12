@@ -1,0 +1,35 @@
+package com.wipro.bean;
+
+public class EmployeeBean {
+	private int empId;
+	private String empName, designation;
+	private float salary;
+	
+	public EmployeeBean(int empId, String name,String desc,float empSalary) {
+		this.empId = empId;
+		empName = name;
+		designation = desc;
+		salary = empSalary;
+	}
+	
+	public String getEmpName()
+	{
+		return empName;
+	}
+	
+	public int getEmpId() {
+		return empId;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+	
+	public float getSalary() {
+		return salary;
+	}
+
+	public void GetEmployeeDetails() {
+		System.out.println("Employee [EmpId = " + empId + ", EmpName = " + empName +", EmpDesignation = "+ designation + ", EmpSalary = " + salary + "]");
+	}
+}
