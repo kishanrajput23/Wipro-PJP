@@ -1,0 +1,29 @@
+package com.mile1.test;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import com.mile1.bean.Student;
+import com.mile1.service.*;
+
+public class TestGradeCalculation {
+
+	@Test
+	public void test() {
+		Student gradeA = new Student("Gopinath",new int[]{80, 90, 90});
+		Student gradeD = new Student("Arul",new int[]{35, 35, 35});
+		Student gradeF = new Student("Stephen",new int[]{30, 35, 35});
+		StudentReport calculate = new StudentReport();
+		//for Checking Grade "A"
+		String result = calculate.findGrade(gradeA);
+		assertEquals("A",result);
+		//for Checking Grade "D"
+		String result1 = calculate.findGrade(gradeD);
+		assertEquals("D",result1);
+		//for Checking Grade "F"
+		String result2 = calculate.findGrade(gradeF);
+		assertEquals("F",result2);
+	}
+
+}
