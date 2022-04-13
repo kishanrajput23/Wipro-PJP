@@ -1,0 +1,1 @@
+UPDATE my_employee set salary = salary + (.1*salary) where department_id = 90;

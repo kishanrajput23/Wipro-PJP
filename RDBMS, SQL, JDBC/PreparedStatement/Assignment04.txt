@@ -1,0 +1,86 @@
+package com.jdbc.preparedStatement;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Assignment04 {
+	boolean con = false;
+	Connection conn = null;
+	PreparedStatement ps = null;
+	public Assignment04() {
+		String URL = "jdbc:oracle:thin:@localhost:1521/xe";
+		String Username = "Gopinath";
+		String password = "gopi";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try{
+            conn = DriverManager.getConnection(URL,Username,password);
+            con = true;
+        }
+        catch(Exception e){
+            con = false;
+            System.out.println(e);
+        }
+	}
+	public boolean checkRollNoInDatabase(int no)
+	{
+		String sql = "select rollno from studentinfo where rollno=?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, no);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public void modifyStudentRecord(int no,int fees)
+	{
+		String sql = "update studentinfo set fees = ? where rollno = ?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, fees);
+			ps.setInt(2, no);
+			ps.executeUpdate();
+			System.out.println("Student Fees Updated");
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Assignment04 modify = new Assignment04();
+		int Rollno = 0;
+		int no = Integer.parseInt(args[0]);
+		boolean check = modify.checkRollNoInDatabase(no);
+		if(check)
+		{
+			Rollno = no;
+			int fees = Integer.parseInt(args[1]);
+			modify.modifyStudentRecord(Rollno,fees);
+		}
+		else
+		{
+			System.out.println("Student Record Doesn't Exists");
+		}
+	}
+}

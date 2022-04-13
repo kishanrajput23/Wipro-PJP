@@ -1,0 +1,86 @@
+package com.jdbc;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+
+public class Callablestatement {
+	boolean con = false;
+	Connection conn = null;
+	Statement stmt = null;
+	CallableStatement cstmt = null;
+	public Callablestatement()
+	{
+		String URL = "jdbc:oracle:thin:@localhost:1521/xe";
+		String Username = "hr";
+		String password = "hr";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try{
+	           conn = DriverManager.getConnection(URL,Username,password);
+	           con = true;
+	       }
+	    catch(Exception e){
+	       con = false;
+	        System.out.println(e);
+	    }
+	}
+	public void execute()
+	{
+		String sql = "SELECT * FROM employees";
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			while (rs.next()) {
+				int empno = rs.getInt("employee_id");
+				String ename = rs.getString("first_name");
+				double netSalary = 0;
+				
+				String sql2 = "{ call calculate_salary(?, ?) }";
+
+				cstmt = conn.prepareCall(sql2);
+				cstmt.setInt(1, empno);
+				cstmt.registerOutParameter(2, Types.DOUBLE);
+				cstmt.executeQuery();
+				
+				netSalary = cstmt.getDouble(2);
+				
+				System.out.println("EmployeeID: " + empno + ", EmployeeName: " + ename + ", Net Salary: " + netSalary);	
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Error");
+			try {
+				stmt.close();
+				cstmt.close();
+				conn.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Callablestatement c = new Callablestatement();
+		if(c.con)
+		{
+			c.execute();
+		}
+		else
+		{
+			System.out.println("ConnectionError");
+		}
+		
+	}
+
+}

@@ -1,0 +1,368 @@
+package com.jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class BasicJdbcOperations {
+
+	Connection conn = null;
+	PreparedStatement ps = null;
+	Statement stmt = null;
+	boolean con = false;
+	ArrayList<Object> Users = new ArrayList<Object>();
+	public BasicJdbcOperations()
+	{
+		String URL = "jdbc:oracle:thin:@localhost:1521/xe";
+		String Username = "hr";
+		String password = "hr";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try{
+	           conn = DriverManager.getConnection(URL,Username,password);
+	           con = true;
+	       }
+	    catch(Exception e){
+	       con = false;
+	        System.out.println(e);
+	    }
+	}
+	public String getUserType(String id)
+	{
+		String sql = "select usertype from users where userid = ?";
+		String userType = null;
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) 
+			userType = rs.getString(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return userType;
+	}
+	public String getIncorrectAttempts(String id)
+	{
+		String sql = "select incorrectattempts from users where userid = ?";
+		String incrct = null;
+		int attempts = 0;
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				attempts = rs.getInt(1);
+			}
+			if(attempts == 0)
+			{
+				incrct = "No Incorrect Attempt";
+			}
+			else if(attempts==1)
+			{
+				incrct = "One time";
+			}
+			else
+			{
+				incrct = "Incorrect Attempts Exceeds";
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return incrct;
+	}
+	public String changeUserType(String id)
+	{
+		String sql = "Update users set usertype = 'Admin' where userid = ?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.executeUpdate();
+			return "Updated Successfully";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "Update Failed";
+		}
+	}
+	public int getLockStatus()
+	{
+		int lockStatus = 0;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("select lockstatus from users");
+			while(rs.next())
+			{
+				if(rs.getInt(1)==0)
+				{
+					lockStatus++;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lockStatus;
+		
+	}
+	public String changeName(String id,String name)
+	{
+		String sql = "Update users set name = ? where userid = ?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setString(2, id);
+			ps.executeUpdate();
+			return "Sucess";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "Failed";
+		}
+	}
+	public String changePassword(String password)
+	{
+		String sql = "Update users set password = ?  where usertype = 'Admin'";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, password);
+			ps.executeUpdate();
+			return "Changed";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "0";
+		}
+	}
+	public String addUser_1(UserBean Bean)
+	{
+		String sql = "Insert into users(userid,password,name,usertype,lockstatus,incorrectattempts)values(?,?,?,?,?,?)";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, Bean.getUserId());
+			ps.setString(2, Bean.getPassword());
+			ps.setString(3, Bean.getName());
+			ps.setString(4, Bean.getUserType());
+			ps.setInt(5, Bean.getLockStatus());
+			ps.setInt(6, Bean.getIncorrectAttempts());
+			ps.executeUpdate();
+			return "Success";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "Failed";
+		}
+	}
+	public String addUser_2(UserBean Bean)
+	{
+		String sql = "Insert into users(userid,password,name,usertype,lockstatus,incorrectattempts)values(?,?,?,?,?,?)";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, Bean.getUserId());
+			ps.setString(2, Bean.getPassword());
+			ps.setString(3, Bean.getName());
+			ps.setString(4, Bean.getUserType());
+			ps.setInt(5, Bean.getLockStatus());
+			ps.setInt(6, Bean.getIncorrectAttempts());
+			ps.executeUpdate();
+			return "Success";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "Failed";
+		}
+	}
+	public void getUsers()
+	{
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("Select * from users");
+			System.out.println("UserID"+"\t"+"Password"+"\t"+"Name"+"\t"+"LockStatus"+"\t"+"IncorrectAttempts"+"\t"+"UserType");
+			while(rs.next())
+			{
+				System.out.println(rs.getString(1)+"\t"+rs.getString(2)+"\t"+rs.getString(3)+"\t"+rs.getInt(4)+"\t"+rs.getInt(5)+"\t"+rs.getString(6));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public void storeAllRecords()
+	{
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("Select * from users");
+			while(rs.next())
+			{
+				Users.add(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getInt(4)+" "+rs.getInt(5)+" "+rs.getString(6));
+			}
+			System.out.println("The stored data are: ");
+			System.out.println(Users);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public String[] getNames()
+	{
+		List names = new ArrayList();
+		String[] userNames = null;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("Select name from users");
+			while(rs.next())
+			{
+				names.add(rs.getString(1));
+			}
+			userNames = (String[])names.toArray(new String[names.size()]);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return userNames;
+	}
+	public boolean checkUserinDatabase(String id)
+	{
+		String sql = "select userid from users where userid = ?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		BasicJdbcOperations exe = new BasicJdbcOperations();
+		int option = 0;
+		if(exe.con)
+		{
+			Scanner sc = new Scanner(System.in);
+			while(option!=10)
+			{
+				System.out.println("-=-=-=-=-=-=-=-=-=--");
+				System.out.println("Basic JDBC Operations");
+				System.out.println("1.Display UserID and Incorrect Attempts");
+				System.out.println("2.Change UserType");
+				System.out.println("3.Get LockStatus");
+				System.out.println("4.Change Name");
+				System.out.println("5.Change Password");
+				System.out.println("6.Add Users");
+				System.out.println("7.Display All Users");
+				System.out.println("8.Store All Data");
+				System.out.println("9.Get User Names");
+				System.out.println("10.Exit");
+				option = sc.nextInt();
+				switch(option)
+				{
+				case 1:
+					System.out.println("Enter the user Id: ");
+					String id = sc.next();
+					boolean check = exe.checkUserinDatabase(id);
+					if(check)
+					{
+						System.out.println("The User Type is: "+exe.getUserType(id));
+						System.out.println("The IncorrectAttemps: "+exe.getIncorrectAttempts(id));
+					}
+					else
+					{
+						System.out.println("User Id doesn't Exists");
+						break;
+					}
+					break;
+				case 2:
+					System.out.println("Enter the user ID: ");
+					String id1 = sc.next();
+					boolean check1 = exe.checkUserinDatabase(id1);
+					if(check1)
+					{
+						System.out.println(exe.changeUserType(id1));
+					}
+					else
+					{
+						System.out.println("User Id doesn't Exists");
+						break;
+					}
+					break;
+				case 3:
+					System.out.println("Lock Status: "+exe.getLockStatus());
+					break;
+				case 4:
+					System.out.println("Enter the user ID: ");
+					String id2 = sc.next();
+					boolean check2 = exe.checkUserinDatabase(id2);
+					if(check2)
+					{
+						System.out.println("Enter The name: ");
+						String name = sc.next();
+						System.out.println(exe.changeName(id2,name));
+					}
+					else
+					{
+						System.out.println("User Id doesn't Exists");
+						break;
+					}
+					break;
+				case 5:
+					System.out.println("Enter the Password to change for Admin: ");
+					String pass = sc.next();
+					System.out.println(exe.changePassword(pass));
+					break;
+				case 6:
+					UserBean Bean = new UserBean("GH1004","GH1004","Gopinath","Employee",0,0);
+					System.out.println(exe.addUser_1(Bean));
+					UserBean Bean1 = new UserBean("GH1005","GH1005","Arul","Employee",0,0);
+					System.out.println(exe.addUser_2(Bean1));
+					break;
+				case 7:
+					exe.getUsers();
+					break;
+				case 8:
+					exe.storeAllRecords();
+					break;
+				case 9:
+					String[] userNames = exe.getNames();
+					System.out.println("Names: ");
+					for(int i=0;i<userNames.length;i++)
+					{
+						System.out.println(userNames[i]);
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		else
+		{
+			System.out.println("Conncection Failed");
+		}
+	}
+
+}

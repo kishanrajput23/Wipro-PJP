@@ -1,0 +1,8 @@
+create table EMP (ID number(7),FIRST_NAME varchar2(25)NOT NULL,LAST_NAME varchar2(25),Dept_Id number(7),
+PRIMARY KEY(ID),
+FOREIGN KEY(Dept_Id)REFERENCES DEPT(Dept_Id));
+desc EMP;
+insert into emp values(101,'Sam','Sundar',10);
+insert into emp values(104,'Ram','Krishna',20);
+insert into emp values(102,'Gopi',null,40);
+insert into emp(id,last_name,first_name,dept_id) values(103,'null','Ram',10);

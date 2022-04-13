@@ -1,0 +1,139 @@
+package com.jdbc.preparedStatement;
+
+import java.sql.*;
+import java.util.*;
+public class Assignment02 {
+	boolean con = false;
+	Connection conn = null;
+	PreparedStatement ps = null;
+	public Assignment02() {
+		String URL = "jdbc:oracle:thin:@localhost:1521/xe";
+		String Username = "Gopinath";
+		String password = "gopi";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try{
+            conn = DriverManager.getConnection(URL,Username,password);
+            con = true;
+        }
+        catch(Exception e){
+            con = false;
+            System.out.println(e);
+        }
+	}
+	public void insertRecord(int rollno,String name,String std,String dob,int fees)
+	{
+		String sql = "insert into studentinfo values(?,?,?,?,?)";
+		if(con) {
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1,rollno);
+			ps.setString(2,name);
+			ps.setString(3,std);
+			ps.setString(4, dob);
+			ps.setInt(5, fees);
+			ps.executeUpdate();
+			System.out.println("-=RECORD INSERTED SUCCESSFULLY=-");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		else
+		{
+			System.out.println("ConnectionError");
+		}
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Assignment02 insert = new Assignment02();
+		Validation validate = new Validation();
+		int Rollno,Fees;
+		String StudentName,Standard,DateOfBirth;
+		
+		int option = 0;
+		while(option!=2) {
+			Scanner sc = new Scanner(System.in);
+			System.out.println("-=-Student Record Management-=-");
+			System.out.println("1.Insert Student Record");
+			System.out.println("2.exit");
+			System.out.print("Enter the Option: ");
+			option = sc.nextInt();
+			switch(option)
+			{
+			case 1:
+				int flag = 0;
+				try {
+				System.out.println("Enter the roll no of the Student");
+				int no = sc.nextInt();
+				boolean checkRollNo = validate.validateRollNo(no);
+				if(checkRollNo)
+				{
+					Rollno = no;
+				}
+				else
+				{
+					System.out.println("Roll no only Accepts 4 digit only");
+					break;
+				}
+				}
+				catch(Exception e)
+				{
+					System.out.println("Enter only Integer Value");
+					break;
+				}
+				System.out.println("Enter the Name of the Student: ");
+				String name = sc.next();
+				boolean checkName = validate.validateName(name);
+				if(checkName)
+				{
+					StudentName = name;
+					
+				}
+				else
+				{
+					System.out.println("Name Should be within 20 Characters");
+					break;
+				}
+				System.out.println("Enter the Standard of the Student: ");
+				String std = sc.next();
+				boolean checkStd = validate.validateStandard(std);
+				if(checkStd)
+				{
+					Standard = std;
+				}
+				else
+				{
+					System.out.println("Invalid Standard");
+					break;
+				}
+				System.out.println("Enter the Date of Birth: ");
+				DateOfBirth = sc.next();
+				System.out.println("Enter the Fees Amount");
+				try {
+					Fees = sc.nextInt();
+				}
+				catch(Exception e)
+				{
+					System.out.println("Enter only Integer Value");
+					break;
+				}
+				insert.insertRecord(Rollno, StudentName, Standard, DateOfBirth, Fees);
+				break;
+			default:
+				break;
+			}
+			try {
+				insert.conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+}

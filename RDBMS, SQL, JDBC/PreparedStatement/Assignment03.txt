@@ -1,0 +1,98 @@
+package com.jdbc.preparedStatement;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Assignment03 {
+	boolean con = false;
+	Connection conn = null;
+	PreparedStatement ps = null;
+	public Assignment03() {
+		String URL = "jdbc:oracle:thin:@localhost:1521/xe";
+		String Username = "Gopinath";
+		String password = "gopi";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try{
+            conn = DriverManager.getConnection(URL,Username,password);
+            con = true;
+        }
+        catch(Exception e){
+            con = false;
+            System.out.println(e);
+        }
+	}
+	public boolean checkRollNoInDatabase(int no)
+	{
+		String sql = "select rollno from studentinfo where rollno=?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, no);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public void deleteStudentRecord(int no)
+	{
+		String log = "insert into studentlog(rollno,studentname,standard) select rollno,studentname,standard from studentinfo where rollno = ?";
+		int flag =0;
+		try {
+			ps = conn.prepareStatement(log);
+			ps.setInt(1, no);
+			ps.executeUpdate();
+			flag = 1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			flag = 0;
+		}
+		if(flag==1) {
+		String del = "delete from studentinfo where rollno =?";
+		try {
+			ps = conn.prepareStatement(del);
+			ps.setInt(1, no);
+			ps.executeUpdate();
+			System.out.println("Student Record Deleted Successfully");
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Assignment03 delete = new Assignment03();
+		int Rollno = 0;
+		int no = Integer.parseInt(args[0]);
+		boolean check = delete.checkRollNoInDatabase(no);
+		if(check)
+		{
+			Rollno = no;
+			delete.deleteStudentRecord(Rollno);
+		}
+		else
+		{
+			System.out.println("Student Record Doesn't Exists");
+		}
+	}
+}

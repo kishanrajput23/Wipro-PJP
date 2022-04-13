@@ -1,0 +1,34 @@
+CREATE OR REPLACE PROCEDURE calculate_salary (
+	p_empno IN employees.employee_id % TYPE,
+	output OUT employees.salary % TYPE
+) IS 
+	p_comm employees.commission_pct % TYPE;
+	p_sal employees.salary % TYPE;
+
+	gross_salary  employees.salary % TYPE;
+	net_salary  employees.salary % TYPE;
+	it  employees.salary % TYPE;
+BEGIN 
+	SELECT commission_pct INTO p_comm FROM employees WHERE employee_id = p_empno;
+	SELECT salary INTO p_sal FROM employees WHERE employee_id = p_empno;
+
+	IF p_comm IS NULL THEN
+		p_comm := 0;
+	END IF;
+
+	gross_salary := p_sal + p_comm;
+	
+	IF p_comm IS NOT NULL THEN
+		it := gross_salary * 10 / 100;
+	ELSE
+		IF p_comm < 500 THEN
+			it := gross_salary * 15 / 100;
+		ELSE
+			it := gross_salary * 20 / 100;
+		END IF;	
+	END IF;
+
+	net_salary := gross_salary - it;
+	Update employees set salary = net_salary where employee_id = p_empno;
+	output := net_salary;
+END calculate_salary;

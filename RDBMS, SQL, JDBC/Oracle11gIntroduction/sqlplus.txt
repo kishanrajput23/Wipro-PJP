@@ -1,0 +1,9 @@
+SQL*Plus: Release 11.2.0.2.0 Production on Fri Feb 18 10:11:15 2022
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> conn
+Enter user-name: hr
+Enter password:
+Connected.
+SQL>

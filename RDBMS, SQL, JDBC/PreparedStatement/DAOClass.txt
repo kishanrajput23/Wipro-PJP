@@ -1,0 +1,150 @@
+package com.jdbc.preparedStatement;
+
+import java.sql.*;
+
+public class DAOClass {
+	Connection conn = null;
+	PreparedStatement ps = null;
+	boolean con = false;
+	public DAOClass()
+	{
+		String URL = "jdbc:oracle:thin:@localhost:1521/xe";
+		String Username = "hr";
+		String password = "hr";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try{
+            conn = DriverManager.getConnection(URL,Username,password);
+            con = true;
+        }
+        catch(Exception e){
+            con = false;
+            System.out.println(e);
+        }
+	}
+	public boolean insertRecord(int id,String name,String grade,String dob,int fee)
+	{
+		String sql = "insert into student values(?,?,?,?,?)";
+		if(con) {
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ps.setString(2, name);
+			ps.setString(3, grade);
+			ps.setString(4, dob);
+			ps.setInt(5, fee);
+			ps.executeUpdate();
+			conn.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		}
+		else
+		{
+			System.out.println("Connection Error");
+			return false;
+		}
+	}
+	public boolean deleteRecord(int id)
+	{
+		String sql = "delete from student where student_id=?";
+		if(con) {
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ps.executeUpdate();
+			conn.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		}
+		else
+		{
+			System.out.println("Connection Error");
+			return false;
+		}
+	}
+	public boolean modifyRecord(int id,int fee)
+	{
+		String sql = "update student set fees=? where student_id=?";
+		if(con)
+		{
+			try {
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, fee);
+				ps.setInt(2, id);
+				ps.executeUpdate();
+				conn.close();
+				return true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+		}
+		else
+		{
+			System.out.println("Connection Error");
+			return false;
+		}
+	}
+	public void displayParticularRecord(int id)
+	{
+		String sql = "select * from student where student_id = ?";
+		if(con)
+		{
+			try {
+				ps= conn.prepareStatement(sql);
+				ps.setInt(1, id);
+				ResultSet rs = ps.executeQuery();
+				System.out.println("StudentID"+"\t"+"StudentName"+"\t"+"StudentGrade"+"\t"+"StudentDOB"+"\t"+"Fees");
+				while(rs.next())
+				{
+					System.out.println(rs.getInt(1)+"\t\t"+rs.getString(2)+"\t\t"+rs.getString(3)+"\t\t"+rs.getString(4)+"\t"+rs.getInt(5));
+				}
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			System.out.println("Connection Error");
+		}
+	}
+	public void displayAllRecords()
+	{
+		String sql = "select * from student";
+		if(con)
+		{
+			try {
+				ps= conn.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery();
+				System.out.println("StudentID"+" "+"StudentName"+" "+"StudentGrade"+" "+"StudentDOB"+" "+"Fees");
+				while(rs.next())
+				{
+					System.out.println(rs.getInt(1)+"       "+rs.getString(2)+"       "+rs.getString(3)+"       "+rs.getString(4)+"       "+rs.getInt(5));
+				}
+				conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			System.out.println("Connection Error");
+		}
+	}	
+}

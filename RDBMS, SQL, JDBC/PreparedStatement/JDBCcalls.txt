@@ -1,0 +1,68 @@
+package com.jdbc.preparedStatement;
+
+public class JDBCcalls {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		DAOClass connect = new DAOClass();
+		int option = Integer.parseInt(args[0]);
+		switch(option) {
+		case 1:
+			int id = Integer.parseInt(args[1]);
+			String name = args[2];
+			String grade = args[3];
+			String dob = args[4];
+			int fees = Integer.parseInt(args[5]);
+			boolean result = connect.insertRecord(id, name, grade,dob,fees);
+			if(result)
+			{
+				System.out.println("Inserted Successfully");
+			}
+			else
+			{
+				System.out.println("Error Occured");
+			}
+			break;
+		case 2:
+			int delId = Integer.parseInt(args[1]);
+			boolean delResult = connect.deleteRecord(delId);
+			if(delResult)
+			{
+				System.out.println("Record Deleted Successfully");
+			}
+			else
+			{
+				System.out.println("Error Occured");
+			}
+			break;
+		case 3:
+			int modId = Integer.parseInt(args[1]);
+			int fee = Integer.parseInt(args[2]);
+			boolean modResult = connect.modifyRecord(modId, fee);
+			if(modResult)
+			{
+				System.out.println("Record Updated Successfully");
+			}
+			else
+			{
+				System.out.println("Error Occured");
+			}
+			break;
+		case 4:
+			int len = args.length;
+			if(len==1)
+			{
+				connect.displayAllRecords();
+			}
+			else
+			{
+				int viewId = Integer.parseInt(args[1]);
+				connect.displayParticularRecord(viewId);
+			}
+			break;
+		default:
+			break;
+		}	
+	}
+
+}

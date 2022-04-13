@@ -1,0 +1,25 @@
+package com.jdbc;
+import java.sql.*;
+public class Assignment01 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String URL = "jdbc:oracle:thin:@localhost:1521/xe";
+		String Username = "hr";
+		String password = "hr";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try{
+            Connection conn = DriverManager.getConnection(URL,Username,password);
+            System.out.println("Connection Established successfully.");
+        }
+        catch(Exception e){
+            System.out.println("Connection could  not be established");
+            System.out.println(e);
+        }
+	}
+}

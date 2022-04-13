@@ -1,0 +1,35 @@
+package com.jdbc.queryProcessing;
+
+import java.sql.*;
+
+public class Assignment01 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String URL = "jdbc:oracle:thin:@localhost:1521/xe";
+		String Username = "hr";
+		String password = "hr";
+		Connection conn = null;
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			conn = DriverManager.getConnection(URL,Username,password);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("select employee_id,first_name from employees");
+			System.out.println("EmployeeID"+ "\t" + "EmployeeName");
+			while(rs.next())
+			{
+				System.out.println(rs.getInt(1) + "\t\t" + rs.getString(2));
+			}
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

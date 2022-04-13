@@ -1,0 +1,42 @@
+package com.jdbc.preparedStatement;
+
+public class Validation {
+	public boolean validateRollNo(int no)
+	{
+		int count = 0;
+		while (no != 0) {
+		      no /= 10;
+		      ++count;
+		    }
+		if(count==4)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	public boolean validateName(String name)
+	{
+		if(name.length()<=20)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	public boolean validateStandard(String std)
+	{
+		if(std.contains("I")||std.contains("II")||std.contains("III")||std.contains("IV")||std.contains("V")||std.contains("VI")||std.contains("VII")||std.contains("VIII")||std.contains("IX")||std.contains("X"))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}

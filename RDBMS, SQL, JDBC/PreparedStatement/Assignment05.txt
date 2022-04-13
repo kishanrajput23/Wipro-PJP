@@ -1,0 +1,113 @@
+package com.jdbc.preparedStatement;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Assignment05 {
+	boolean con = false;
+	Connection conn = null;
+	PreparedStatement ps = null;
+	public Assignment05()
+	{
+		String URL = "jdbc:oracle:thin:@localhost:1521/xe";
+		String Username = "Gopinath";
+		String password = "gopi";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try{
+            conn = DriverManager.getConnection(URL,Username,password);
+            con = true;
+        }
+        catch(Exception e){
+            con = false;
+            System.out.println(e);
+        }
+	}
+	public boolean checkRollNoInDatabase(int no)
+	{
+		String sql = "select rollno from studentinfo where rollno=?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, no);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next())
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public void displayStudentRecord(int no)
+	{
+		String sql = "select * from studentinfo where rollno =?";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, no);
+			ResultSet rs = ps.executeQuery();
+			System.out.println("RollNo"+"\t\t"+"StudentName"+"\t\t"+"Standard"+"\t\t"+"DOB"+"\t\t"+"Fees");
+			while(rs.next())
+			{
+				System.out.println(rs.getInt(1)+"\t\t"+rs.getString(2)+"\t\t"+rs.getString(3)+"\t\t"+rs.getDate(4)+"\t\t"+rs.getInt(5));
+			}
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void displayStudentRecord()
+	{
+		String sql = "select * from studentinfo";
+		try {
+			ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			System.out.println("RollNo"+"\t\t"+"StudentName"+"\t\t"+"Standard"+"\t"+"DOB"+"\t"+"Fees");
+			while(rs.next())
+			{
+				System.out.println(rs.getInt(1)+"\t\t"+rs.getString(2)+"\t\t"+rs.getString(3)+"\t\t"+rs.getDate(4)+"\t\t"+rs.getInt(5));
+			}
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Assignment05 display = new Assignment05();
+		int len = args.length;
+		if(len>=1)
+		{
+			int rollno = Integer.parseInt(args[0]);
+			boolean check = display.checkRollNoInDatabase(rollno);
+			if(check)
+			{
+				display.displayStudentRecord(rollno);
+			}
+			else
+			{
+				System.out.println("Student Record doesn't Exists");
+			}
+		}
+		else
+		{
+			display.displayStudentRecord();
+		}
+	}
+
+}

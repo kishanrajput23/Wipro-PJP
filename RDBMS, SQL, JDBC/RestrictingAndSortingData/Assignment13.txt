@@ -1,0 +1,1 @@
+select last_name from employees where last_name like '%a%' or last_name like '%e%';

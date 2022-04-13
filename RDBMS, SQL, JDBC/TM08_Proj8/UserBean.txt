@@ -1,0 +1,39 @@
+package com.jdbc;
+
+public class UserBean {
+	private String Id,Password,Name,Usertype;
+	private int incorrectAttempts,lockStatus;
+	public UserBean(String id,String pass,String name, String ustype,int incrct,int status)
+	{
+		this.Id = id;
+		this.Password = pass;
+		this.Name = name;
+		this.Usertype = ustype;
+		this.incorrectAttempts = incrct;
+		this.lockStatus = status;
+	}
+	public String getUserId()
+	{
+		return Id;
+	}
+	public String getPassword()
+	{
+		return Password;
+	}
+	public String getName()
+	{
+		return Name;
+	}
+	public String getUserType()
+	{
+		return Usertype;
+	}
+	public int getIncorrectAttempts()
+	{
+		return incorrectAttempts;
+	}
+	public int getLockStatus()
+	{
+		return lockStatus;
+	}
+}
