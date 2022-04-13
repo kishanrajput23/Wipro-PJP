@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Welcome to Auction</title>
+</head>
+<style>
+    .input {
+        background: white;
+        border: 1px solid black;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<body>
+    <div style="text-align:center">
+        <h1>Welcome to AP Auctions.Please Enter a Bid.</h1>
+        <h2 id="req" style="display:none;"><span style="color: red;">Required Data Missing!</span> Enter and Resubmit
+        </h2>
+        <form onsubmit="return Validation();" action="AuctionServlet" method="post">
+            <div>
+                <label>Item Id:</label><input type="text" placeholder="Enter the Item id" name="itemId" id="itemId"
+                    class="input" />
+                <label id="idError" style="color: red;display: none;">* Required Field</label>
+                <label id="idErr" style="color: red;display: none;">* Enter only Number</label>
+            </div>
+            <div>
+                <label>Item Name:</label><input type="text" placeholder="Enter the Item name" name="itemName"
+                    id="itemName" class="input" />
+                <label id="itemError" style="color: red;display: none;">* Required Field</label>
+            </div>
+            <div>
+                <label>Your Name:</label><input type="text" placeholder="Enter your name" name="name" id="name"
+                    class="input" />
+                <label id="nameError" style="color: red;display: none;">* Required Field</label>
+            </div>
+            <div>
+                <label>Your EmailAddress:</label><input type="text" placeholder="Enter the Email id" name="email"
+                    id="email" class="input" />
+                <label id="emailError" style="color: red;display: none;">* Required Field</label>
+                <label id="emailErr" style="color: red;display: none;">* Enter Valid Email</label>
+            </div>
+            <div>
+                <label>Amount Bid:</label><input type="text" placeholder="Enter the bid amount" name="bid" id="bid"
+                    class="input" />
+                <label id="bidError" style="color: red;display: none;">* Required Field</label>
+                <label id="bidErr" style="color: red;display: none;">* Enter only Number</label>
+            </div>
+            Auto-Increment bid to match other bidders?:<input type="checkbox" name="inc" value="true">
+            <div>
+                <input type="submit" value="Submit Bid" />
+            </div>
+        </form>
+    </div>
+    <script>
+        function Validation() {
+            var id = document.getElementById('itemId').value;
+            var itemName = document.getElementById('itemName').value;
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var bid = document.getElementById('bid').value;
+            var idAuth = false;
+            var itemAuth = false;
+            var nameAuth = false;
+            var emailAuth = false;
+            var bidAuth = false;
+            var numberPattern = /^[0-9]+$/;
+            var emailPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (id) {
+                if (id.match(numberPattern)) {
+                    document.getElementById('idErr').style = "color:red;display:none;";
+                    document.getElementById('idError').style = "display:none;color:red;";
+                    document.getElementById('req').style = "display:none";
+
+                    idAuth = true;
+                }
+                else {
+                    document.getElementById('idErr').style = "display:block;color:red;";
+                    document.getElementById('idError').style = "display:none;color:red";
+                    document.getElementById('req').style = "display:none";
+
+                    idAuth = false;
+                }
+            }
+            else {
+                document.getElementById('idError').style = "display:block;color:red";
+                document.getElementById('idErr').style = "display:none;color:red;";
+                document.getElementById('req').style = "display:block";
+                idAuth = false;
+            }
+            if (itemName) {
+                document.getElementById('itemError').style = "display:none;";
+                document.getElementById('req').style = "display:none";
+                itemAuth = true;
+            }
+            else {
+                document.getElementById('itemError').style = "display:block;color:red;";
+                document.getElementById('req').style = "display:block";
+                itemAuth = false;
+            }
+            if (name) {
+                document.getElementById('nameError').style = "display:none;";
+                document.getElementById('req').style = "display:none";
+                nameAuth = true;
+            }
+            else {
+                document.getElementById('nameError').style = "display:block;color:red;";
+                document.getElementById('req').style = "display:block";
+                nameAuth = false;
+            }
+            if (email) {
+                if (email.match(emailPattern)) {
+                    document.getElementById('emailError').style = "display:none";
+                    document.getElementById('emailErr').style = "display:none;color:red;";
+                    document.getElementById('req').style = "display:none";
+                    emailAuth = true;
+                }
+                else {
+                    document.getElementById('emailError').style = "display:none";
+                    document.getElementById('emailErr').style = "display:block;color:red";
+                    document.getElementById('req').style = "display:none";
+                    emailAuth = false;
+                }
+            }
+            else {
+                document.getElementById('emailError').style = "display:block;color:red;";
+                document.getElementById('emailErr').style = "display:none";
+                document.getElementById('req').style = "display:block";
+                emailAuth = false;
+            }
+            if (bid) {
+                if (bid.match(numberPattern)) {
+                    document.getElementById('bidError').style = "display:none";
+                    document.getElementById('bidErr').style = "display:none;color:red;";
+                    document.getElementById('req').style = "display:none";
+                    bidAuth = true;
+                }
+                else {
+                    document.getElementById('bidError').style = "display:none";
+                    document.getElementById('bidErr').style = "display:block;color:red";
+                    document.getElementById('req').style = "display:none";
+                    bidAuth = false;
+                }
+            }
+            else {
+                document.getElementById('bidError').style = "display:block;color:red;";
+                document.getElementById('bidErr').style = "display:none";
+                bidAuth = false;
+                document.getElementById('req').style = "display:block";
+            }
+            if (idAuth && itemAuth && nameAuth && emailAuth && bidAuth) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+</body>
+
+</html>

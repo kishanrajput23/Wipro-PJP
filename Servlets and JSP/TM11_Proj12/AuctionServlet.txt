@@ -1,0 +1,57 @@
+
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class AuctionServlet
+ */
+@WebServlet("/AuctionServlet")
+public class AuctionServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AuctionServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		PrintWriter out = response.getWriter();
+		response.setContentType("text/html");
+		int id = Integer.parseInt(request.getParameter("itemId"));
+		String itemName = request.getParameter("itemName").toString();
+		String name = request.getParameter("name").toString();
+		String email = request.getParameter("email").toString();
+		int bid = Integer.parseInt(request.getParameter("bid"));
+		String incr = request.getParameter("inc").toString();
+		request.setAttribute("itemId", id);
+		request.setAttribute("itemName",itemName);
+		request.setAttribute("name", name);
+		request.setAttribute("email", email);
+		request.setAttribute("bid", bid);
+		request.setAttribute("inc", incr);
+		request.getRequestDispatcher("Auc.jsp").forward(request,response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}

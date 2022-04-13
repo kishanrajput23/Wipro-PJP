@@ -1,0 +1,48 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Bid Info</title>
+</head>
+<style>
+table{
+margin-left:auto;
+margin-right:auto;
+}
+</style>
+<body style="background-color:yellow;text-align:center">
+	<div>
+		<h1>Bid Submitted</h1>
+		<br>
+Your bid id now active.If your bid is successful,you will be notified within 24 hours close of bidding.
+<br>
+<br>
+<table>
+
+<tr style="background-color:black;color:white;">
+<th><%out.println(request.getAttribute("itemName")); %></th>
+</tr>
+<tr>
+<td>Item ID:<%out.println(request.getAttribute("itemId")); %></td>
+</tr>
+<tr>
+<td>Name: <%out.println(request.getAttribute("name"));%></td>
+</tr>
+<tr>
+<td>Email Address:<%out.println(request.getAttribute("email")); %></td>
+</tr>
+<tr>
+<td>Bid price:Rs<%out.println(request.getAttribute("bid")); %></td>
+</tr>
+<tr>
+<td>Auto-increment price: <%out.println(request.getAttribute("inc")); %></td>
+</tr>
+
+</table>
+
+<br>
+	</div>
+</body>
+</html>

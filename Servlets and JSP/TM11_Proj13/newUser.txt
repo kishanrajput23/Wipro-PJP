@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Register</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="login">
+        <div class="account-login">
+            <h1>Account Register</h1>
+            <form onsubmit="return Validation();" action="Register" method="post" autoComplete="off" class="login-form">
+                <div class="form-group">
+                    <input type="text" placeholder="User Name" name="uname" id="name" class="form-control">
+                </div>
+                <label id="nameErr" style="color: red;display: none;">* Name is Required</label>
+                <label id="nameError" style="color: red;display: none;">* Name should contain only characters</label>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" name="pass" id="pass" class="form-control">
+                </div>
+                <label id="passErr" style="color: red;display: none;">* Password is Required</label>
+                <label id="passError" style="color: red;display: none;">* Password Must be atleast 6 to 20 characters
+                    long and should contain one numeric one uppercase and one lowercase letter</label>
+                <div class="form-group">
+                    <input type="password" placeholder="Retype Password" id="cpass" class="form-control">
+                </div>
+                <label id="cpassErr" style="color: red;display: none;">* Required</label>
+                <label id="cpassError" style="color: red;display: none;">* Password Doesn't Match</label>
+                <button type="submit" class="btn">Add</button>
+                <p>Are you Existing User?<a href="./Home.html">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+    <script>
+        function Validation() {
+            var name = document.getElementById('name').value;
+            var pass = document.getElementById('pass').value;
+            var cpass = document.getElementById('cpass').value;
+            var nameAuth = false;
+            var passAuth = false;
+            var cpassAuth = false;
+            var charPattern = /^[A-Za-z]+$/;
+            var pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+            if (name) {
+                if (name.match(charPattern)) {
+                    document.getElementById('nameError').style = "display:none;";
+                    document.getElementById('nameErr').style = "display:none;";
+                    nameAuth = true;
+                }
+                else {
+                    document.getElementById('nameError').style = "display:block;color:red";
+                    document.getElementById('nameErr').style = "display:none;";
+                    nameAuth = false;
+                }
+            }
+            else {
+                document.getElementById('nameError').style = "display:none;color:red";
+                document.getElementById('nameErr').style = "display:block;color:red;";
+                nameAuth = false;
+            }
+            if (pass) {
+                if (pass.match(pattern)) {
+                    document.getElementById('passError').style = "display:none;";
+                    document.getElementById('passErr').style = "display:none;";
+                    passAuth = true;
+                }
+                else {
+                    document.getElementById('passError').style = "display:block;color:red";
+                    document.getElementById('passErr').style = "display:none;";
+                    passAuth = false;
+                }
+            }
+            else {
+                document.getElementById('passError').style = "display:none;color:red";
+                document.getElementById('passErr').style = "display:block;color:red;";
+                passAuth = false;
+            }
+            if (cpass) {
+                if (cpass === pass) {
+                    document.getElementById('cpassError').style = "display:none;";
+                    document.getElementById('cpassErr').style = "display:none;";
+                    cpassAuth = true;
+                }
+                else {
+                    document.getElementById('cpassError').style = "display:block;color:red";
+                    document.getElementById('cpassErr').style = "display:none;";
+                    cpassAuth = false;
+                }
+            }
+            else {
+                document.getElementById('cpassError').style = "display:none;color:red";
+                document.getElementById('cpassErr').style = "display:block;color:red";
+                cpassAuth = false;
+            }
+           if(nameAuth&&passAuth&&cpassAuth)
+           {
+               alert("Registered Successfully!");
+               return true;
+           }
+           else{
+               return false;
+           }
+        }
+    </script>
+</body>
+
+</html>

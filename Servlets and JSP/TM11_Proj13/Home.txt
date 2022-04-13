@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Home Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="login">
+        <div class="account-login">
+            <h1>Account Login</h1>
+            <form onsubmit="return Validation();" action="Login" method="post" class="login-form">
+                <div class="form-group">
+                    <input type="text" placeholder="User Name" name="uname" id="name" class="form-control">
+                </div>
+                <label id="nameErr" style="color: red;display: none;">* Name is Required</label>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" name="pass" id="pass" class="form-control">
+                </div>
+                <label id="passErr" style="color: red;display: none;">* Password is Required</label>
+                <div class="remember">
+                    <a href="./ChangePass.html" class="pull-right">Change Password?</a>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <p>Are you new?<a href="./newUser.html">Sign Up</a></p>
+            </form>
+        </div>
+    </div>
+    <script>
+        function Validation() {
+            var name = document.getElementById('name').value;
+            var pass = document.getElementById('pass').value;
+            var nameAuth = false;
+            var passAuth = false;
+            if (name) {
+                    document.getElementById('nameErr').style = "display:none;";
+                    nameAuth = true;
+            }
+            else {
+                document.getElementById('nameErr').style = "display:block;color:red;";
+                nameAuth = false;
+            }
+            if (pass) {
+                    document.getElementById('passErr').style = "display:none;";
+                    passAuth = true;
+            }
+            else {
+                document.getElementById('passErr').style = "display:block;color:red;";
+                passAuth = false;
+            }
+           if(nameAuth&&passAuth)
+           {
+               return true;
+           }
+           else{
+               return false;
+           }
+        }
+    </script>
+</body>
+
+</html>
