@@ -1,1 +1,5 @@
-# Assignment Questions
+![Screenshot (605)](https://user-images.githubusercontent.com/70385488/167265011-0618dfb9-e262-4b07-929b-e6c727cac31c.png)
+![Screenshot (606)](https://user-images.githubusercontent.com/70385488/167265012-c7b1f21e-5055-4bf2-a383-c0fc11ed94c3.png)
+![Screenshot (607)](https://user-images.githubusercontent.com/70385488/167265014-9acde5fc-a826-4fed-9056-162bc4ad3704.png)
+![Screenshot (609)](https://user-images.githubusercontent.com/70385488/167265015-18191a39-c9ea-4794-91de-2f0783f86601.png)
+![Screenshot (610)](https://user-images.githubusercontent.com/70385488/167265016-19a49718-dfae-44e1-ae2f-c0dd4c0410bd.png)
