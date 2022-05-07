@@ -227,3 +227,8 @@ The given array is :
 
 The biggest number in the given array is 222
 ```
+
+# Project Description
+
+![Screenshot (572)](https://user-images.githubusercontent.com/70385488/167264563-a06fd423-6a53-435f-9ae1-4954f31cf321.png)
+![Screenshot (573)](https://user-images.githubusercontent.com/70385488/167264565-91dd0d2c-d0a7-45d8-a80c-22d222462c3c.png)
